@@ -101,7 +101,8 @@ module.exports = {
           // data from standard output is here as buffers
           //ws.send(chunk,function(err) { console.log('Err: ' + err); });
           try{
-            ws.send(chunk);
+            //ws.send(chunk);
+              ws.send(chunk.replace(/(\r)/gm,""));
             cmdLogger.log('debug',chunk);
           }catch(err){
             logger.error('ws.send chunk error: ' + err);

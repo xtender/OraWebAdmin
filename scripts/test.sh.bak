@@ -1,7 +1,0 @@
-#!/bin/bash
-
-for n in {1..5}; do 
-  echo $n
-  date;
-  sleep 3s
-done

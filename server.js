@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-const port = process.env.NODE_PORT || 3001;
 //config:
 const fconfig = require('./config.json')
 const defaultConfig = fconfig.default;
@@ -9,6 +8,9 @@ const environmentConfig = fconfig[environment];
 global.config = Object.assign(defaultConfig, environmentConfig);
 
 console.log(config);
+
+//port:
+const port = process.env.NODE_PORT || config.port || 3001;
 
 //logger:
 const logger = require('./logger.js').getLogger('main', 'server.js', config.loglevel, 'orawebadmin', config.logdir, 'application.log');
