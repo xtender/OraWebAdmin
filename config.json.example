@@ -1,6 +1,7 @@
 {
     "default": {
         "logdir": "/var/log/orawebadmin/",
+        "port": "80",
         "loglevel": "warn",
         "users": {"supergod":"---super---sec---1984---ret---password---"},
         "databases":[
@@ -20,6 +21,7 @@
     },
     "development":{
         "loglevel": "debug",
+        "port": "3001"
         "users": {"supergod":"---super---sec---1984---ret---password---"},
         "databases":[
             {
