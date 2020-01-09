@@ -1,0 +1,27 @@
+{
+  "name": "orawebadmin",
+  "version": "1.0.0",
+  "description": "WebAdmin for Oracle DB",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "bootstrap": "^4.4.1",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-basic-auth": "^1.2.0",
+    "express-ws": "^4.0.0",
+    "websocket": "^1.0.31",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "oracle",
+    "webadmin"
+  ],
+  "author": "Sayan Malakshinov",
+  "license": "ISC"
+}

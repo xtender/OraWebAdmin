@@ -1,0 +1,15 @@
+[Unit]
+Description=OraWebAdmin
+Documentation=https://tmd.tv/
+After=network.target
+
+[Service]
+Environment=NODE_PORT=80
+WorkingDirectory=/home/oracle/orawebadmin/
+Type=simple
+User=oracle
+ExecStart=/usr/bin/node /home/oracle/orawebadmin/server.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

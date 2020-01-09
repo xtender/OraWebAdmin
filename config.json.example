@@ -1,0 +1,45 @@
+{
+    "default": {
+        "logdir": "/var/log/orawebadmin/",
+        "loglevel": "warn",
+        "users": {"supergod":"---super---sec---1984---ret---password---"},
+        "databases":[
+            {
+                "dbname":"DBLIVE",
+                "oracle_sid":"DBLIVE",
+                "oracle_home":"/opt/oracle/product/ora19",
+                "login":"/ as sysdba"
+            },
+            {
+                "dbname":"DBTEST",
+                "oracle_sid":"DBTEST",
+                "oracle_home":"/opt/oracle/product/ora19",
+                "login":"/ as sysdba"
+            }
+        ]
+    },
+    "development":{
+        "loglevel": "debug",
+        "users": {"supergod":"---super---sec---1984---ret---password---"},
+        "databases":[
+            {
+                "dbname":"DBTEST",
+                "oracle_sid":"DBTEST",
+                "oracle_home":"/opt/oracle/product/ora19",
+                "login":"/ as sysdba"
+            }
+        ]
+    },
+    "production":{
+        "loglevel": "warn",
+        "users": {"supergod":"---super---sec---1984---ret---password---"},
+        "databases":[
+            {
+                "dbname":"DBLIVE",
+                "oracle_sid":"DBLIVE",
+                "oracle_home":"/opt/oracle/product/ora19",
+                "login":"/ as sysdba"
+            }
+        ]
+    }
+}

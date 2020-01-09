@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+  <head>
+    <%- include("partials/head") %>
+  </head>
+  
+  <body class="d-flex flex-column h-100">
+
+    <%- include("partials/header") %>
+
+    <!-- Begin page content -->
+<main role="main" class="flex-shrink-0">
+  <div class="container">
+  
+    <div class="scripts">
+        <fieldset class="border p-2">
+            <legend class="w-auto">Execute script:</legend>
+            <div class="form-check">
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>DB Name:</label><br />
+                        
+                        <% databases.forEach(function(db,index) { %>
+                          <input class="form-check-input" type="radio" name="dbName" id="idDBName<%= index %>" value="<%= index %>" <% if(index==0){ %> checked <% } %>>
+                          <label class="form-check-label" for="idDBName<%= index %>"> <%= db.dbname %> </label>
+                          <br />
+                        <% }); %>
+                        
+                    </div>
+                    
+                    <div class="form-group col-md-6">
+                        <label for="scriptName">Script:</label>
+                        <select class="form-control" id="scriptName">
+                          <% scripts.forEach(function(script) { %>
+                              <option value="<%= script.key %>"><%= script.prettyName %></option>
+                          <% }); %>
+                        </select>
+                        
+                        <button id='scButton' onclick='stopstart()' style="margin-top: 15;" />
+                            <div style="display:flex" ><img src="/images/Play1Normal.png" style="margin-right: 5px;vertical-align: middle;" id="scImage"/><div id="scDiv">Execute</div></div>
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
+        </fieldset>
+    </div>
+    
+    
+    <!-- 
+    <button id='test' onclick='openSocket("echo")' />Run test</button>
+    <button id='test' onclick='closeSocket()' />Close socket</button>
+    -->    
+    
+    <div class="form-group" id='res' >
+        <label for="log">Script output:</label> <button id='clearLog' onclick='$("#log").val("");' />Clear log</button>
+        <textarea class="form-control text-monospace" id="log" rows="10" readonly></textarea>
+  </div>
+  </div>
+</main>
+    
+    <%- include("partials/footer") %>
+    
+  </body>
+</html>
