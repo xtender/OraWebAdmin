@@ -8,7 +8,7 @@ set lines 300
 select HOST_NAME, DATABASE_TYPE from v$instance;
 select
     INSTANCE_NAME,
-    INSTANCE_ROLE,
+    (select database_role from v$database) as INSTANCE_ROLE,
     VERSION,
     STARTUP_TIME,
     STATUS,
