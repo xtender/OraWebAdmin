@@ -1,0 +1,3 @@
+show configuration;
+show database $ORACLE_SID;
+exit;

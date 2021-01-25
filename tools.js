@@ -5,14 +5,15 @@ const logger = require('./logger.js').getLogger('tools', 'tools.js', config.logl
 
 const os = require('os');
 
-const FileExt = os.platform()==='win32'?'bat':'sh';
+const FileExtOS = os.platform()==='win32'?'bat':'sh';
+const FileExtAllowed = [FileExtOS, 'sql', 'rman', 'dgmgrl'];
 
 function getFileExtension(filename) {
     return filename.substring(0,1) === '.' ? '' : filename.split('.').slice(1).pop() || '';
 }
 
 function trimFileExtension(filename) {
-    return filename.substring(0, filename.indexOf('.'+FileExt));
+    return filename.substring(0, filename.indexOf('.'));
 }
 
 module.exports = {
@@ -44,13 +45,42 @@ module.exports = {
                     .map((file) => file.split(path.sep).slice(-1)[0])
                     .filter(function (fname) {
                         // os.platform(): 'darwin', 'freebsd', 'linux', 'sunos' or 'win32'
-                        return getFileExtension(fname) === FileExt;
+                        return FileExtAllowed.includes(getFileExtension(fname));
                     })
                     .sort()
                     .map(function(value, index){return {key: index, name: value, prettyName: trimFileExtension(value)}});
         ;
     },
-
+    //================================================================================================
+    // function listScripts()
+    listExtensions: function () {
+      var path = require('path');
+      const directoryPath = path.join(__dirname, 'extensions');
+      //passsing directoryPath and callback function
+      return this.fileList(directoryPath)
+                    .map((file) => file.split(path.sep).slice(-1)[0])
+                    .filter(function (fname) {
+                        // os.platform(): 'darwin', 'freebsd', 'linux', 'sunos' or 'win32'
+                        return getFileExtension(fname) === FileExtOS;
+                    })
+                    .sort()
+                    .map(function(value, index){return {key: index, name: value}});
+        ;
+    },
+    //================================================================================================
+    // function listScripts()
+    getScriptByExtension: function (fExt) {
+      var path = require('path');
+      const directoryPath = path.join(__dirname, 'extensions');
+      //passing directoryPath and callback function
+      return this.fileList(directoryPath)
+                    .map((file) => file.split(path.sep).slice(-1)[0])
+                    .filter(function (fname) {
+                        // os.platform(): 'darwin', 'freebsd', 'linux', 'sunos' or 'win32'
+                        return fname === fExt + '.' + FileExtOS;
+                    })[0];
+        ;
+    },
     //================================================================================================
     // function runCommand(ws, cmd)
     runCommand: function (ws,cmdN, params, env) {
@@ -69,14 +99,26 @@ module.exports = {
         var cmdLogger = require('./logger.js').getLogger('runCommand', cmd, 'debug', 'orawebadmin', config.logdir, cmdLog);
         
         const { spawn } = require('child_process');
-        var fullpath = __dirname + '/scripts';
-        var fullcmd = __dirname + '/scripts/'+cmd; //process.cwd()
+        var fullpath;
+        var fullcmd;
+        var cmdExtension = getFileExtension(cmd);
+        env["SCRIPT"] = cmd;
+        
+        if(cmdExtension === FileExtOS){
+            fullpath = __dirname + '/scripts';
+            fullcmd = __dirname + '/scripts/'+cmd;
+        }else{
+            fullpath = __dirname + '/scripts';
+            fullcmd = __dirname + '/extensions/' + cmdExtension +'.'+ FileExtOS;
+            env["SCRIPT"] = __dirname + '/scripts/' + cmd;
+        }
+        
         var child = null;
         //ws.send('Starting '+fullcmd + ' in ' + fullpath);
         cmdLogger.info('Starting '+fullcmd);
         logger.debug('Starting '+fullcmd);
         try {
-            ws.send('Spawn '+fullcmd + ' in ' + fullpath);
+            //ws.send('Spawn '+fullcmd + ' in ' + fullpath);
             child = spawn(
                 fullcmd,
                 params, 
@@ -85,7 +127,7 @@ module.exports = {
                     env: env
                 }
             );
-            ws.send('Started '+fullcmd + ' in ' + fullpath);
+            //ws.send('Started '+fullcmd + ' in ' + fullpath);
         }catch(err){
             logger.error('spawn error: ' + err);
             cmdLogger.error(err);
